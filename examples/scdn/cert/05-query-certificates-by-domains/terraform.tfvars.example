@@ -1,0 +1,10 @@
+access_key = "your-access-key"
+secret_key = "your-secret-key"
+endpoint   = "https://apiv4.lalcsafe.com"
+
+domains = [
+  "example.com",
+  "test.com",
+  "demo.example.com"
+]
+
