@@ -61,16 +61,11 @@ func ResourceByteShieldScdnDomain() *schema.Resource {
 			"tpl_recommend": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "The template recommendation status",
-			},
-			"app_type": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "The application type",
+				Description: "The recommended configuration. Valid values: large_file (large file download), web_acce (website acceleration). This parameter is mutually exclusive with tpl_id",
 			},
 			"origins": {
 				Type:        schema.TypeList,
-				Required:    true,
+				Optional:    true,
 				Description: "The origin server configuration",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -111,7 +106,7 @@ func ResourceByteShieldScdnDomain() *schema.Resource {
 									"view": {
 										Type:        schema.TypeString,
 										Required:    true,
-										Description: "The view of the record",
+										Description: "The view of the record. Valid values: primary (primary line), backup (backup line)",
 									},
 									"value": {
 										Type:        schema.TypeString,
@@ -239,7 +234,6 @@ func resourceScdnDomainCreate(d *schema.ResourceData, m interface{}) error {
 		TplID:               d.Get("tpl_id").(int),
 		ProtectStatus:       d.Get("protect_status").(string),
 		TplRecommend:        d.Get("tpl_recommend").(string),
-		AppType:             d.Get("app_type").(string),
 	}
 
 	// Build origins
