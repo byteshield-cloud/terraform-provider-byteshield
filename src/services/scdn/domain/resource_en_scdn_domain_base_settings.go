@@ -32,7 +32,7 @@ func ResourceByteShieldScdnDomainBaseSettings() *schema.Resource {
 			"proxy_host": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				Description: "Proxy host configuration",
+				Description: "Proxy host settings",
 				MaxItems:    1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -44,7 +44,7 @@ func ResourceByteShieldScdnDomainBaseSettings() *schema.Resource {
 						"proxy_host_type": {
 							Type:        schema.TypeString,
 							Optional:    true,
-							Description: "Proxy host type",
+							Description: "Proxy host type. Valid values: default, off. Required if proxy_host is present",
 						},
 					},
 				},
@@ -52,7 +52,7 @@ func ResourceByteShieldScdnDomainBaseSettings() *schema.Resource {
 			"proxy_sni": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				Description: "Proxy SNI configuration",
+				Description: "Proxy SNI settings",
 				MaxItems:    1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -64,7 +64,7 @@ func ResourceByteShieldScdnDomainBaseSettings() *schema.Resource {
 						"status": {
 							Type:        schema.TypeString,
 							Optional:    true,
-							Description: "Proxy SNI status",
+							Description: "Proxy SNI status. Valid values: on, off. Required if proxy_sni is present",
 						},
 					},
 				},
@@ -72,24 +72,24 @@ func ResourceByteShieldScdnDomainBaseSettings() *schema.Resource {
 			"domain_redirect": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				Description: "Domain redirect configuration",
+				Description: "Domain redirect settings",
 				MaxItems:    1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"status": {
 							Type:        schema.TypeString,
 							Optional:    true,
-							Description: "Redirect status (on/off)",
+							Description: "Explicit/implicit forwarding status. Valid values: on, off. Required if domain_redirect is present",
 						},
 						"jump_to": {
 							Type:        schema.TypeString,
 							Optional:    true,
-							Description: "Redirect target URL",
+							Description: "Domain redirect jump to URL",
 						},
 						"jump_type": {
 							Type:        schema.TypeString,
 							Optional:    true,
-							Description: "Redirect jump type",
+							Description: "Explicit/implicit forwarding type. Valid values: explicit, implicit. Required if domain_redirect is present",
 						},
 					},
 				},

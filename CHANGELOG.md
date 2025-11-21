@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **SCDN Domain Resource**: Optimized resource configuration and improved documentation
+  - Removed `app_type` parameter from `byteshield_scdn_domain` resource
+  - Made `origins` parameter optional in `byteshield_scdn_domain` resource
+  - Added `host` field to origin records for specifying Host header when accessing origin
+  - Enhanced field descriptions with valid values and detailed documentation
+  - Updated `tpl_recommend` description with valid values (large_file, web_acce)
+  - Updated `view` field description with line types (primary, backup)
+  - Improved `domain_base_settings` resource field descriptions with valid values
+
+### Fixed
+- Enhanced documentation accuracy for SCDN domain and origin data sources
+- Added missing `host` field support in origin records
+
 ## [1.0.0] - 2025-09-11
 
 ### Added
