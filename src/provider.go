@@ -10,6 +10,8 @@ import (
 	scdncacheoperate "github.com/byteshield-cloud/terraform-provider-byteshield/src/services/scdn/cache_operate"
 	scdncert "github.com/byteshield-cloud/terraform-provider-byteshield/src/services/scdn/cert"
 	scdndomain "github.com/byteshield-cloud/terraform-provider-byteshield/src/services/scdn/domain"
+	scdnipdata "github.com/byteshield-cloud/terraform-provider-byteshield/src/services/scdn/ip/data"
+	scdnipresource "github.com/byteshield-cloud/terraform-provider-byteshield/src/services/scdn/ip/resource"
 	scdnlogdownload "github.com/byteshield-cloud/terraform-provider-byteshield/src/services/scdn/log_download"
 	scdnnetworkspeed "github.com/byteshield-cloud/terraform-provider-byteshield/src/services/scdn/network_speed"
 	scdnorigingroup "github.com/byteshield-cloud/terraform-provider-byteshield/src/services/scdn/origin_group"
@@ -62,6 +64,10 @@ func Provider() *schema.Provider {
 	ResourcesMap := map[string]*schema.Resource{
 		// SCDN domain management resources (from domain module)
 		// Note: These resources are organized under scdn/domain/ for better module management
+
+		// User IP Intelligence resources
+		"byteshield_scdn_user_ip":      scdnipresource.ResourceByteshieldScdnUserIp(),
+		"byteshield_scdn_user_ip_item": scdnipresource.ResourceByteshieldScdnUserIpItem(),
 	}
 
 	// Add domain module resources dynamically
@@ -113,6 +119,10 @@ func Provider() *schema.Provider {
 	DataSourcesMap := map[string]*schema.Resource{
 		// SCDN domain data sources (from domain module)
 		// Note: These data sources are organized under scdn/domain/ for better module management
+
+		// User IP Intelligence data sources
+		"byteshield_scdn_user_ips":      scdnipdata.DataSourceByteshieldScdnUserIps(),
+		"byteshield_scdn_user_ip_items": scdnipdata.DataSourceByteshieldScdnUserIpItems(),
 	}
 
 	// Add domain module data sources dynamically
