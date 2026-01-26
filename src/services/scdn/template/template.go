@@ -10,6 +10,7 @@ func Resources() map[string]*schema.Resource {
 		"byteshield_scdn_rule_template":               ResourceByteShieldScdnRuleTemplate(),
 		"byteshield_scdn_rule_template_domain_bind":   ResourceByteShieldScdnRuleTemplateDomainBind(),
 		"byteshield_scdn_rule_template_domain_unbind": ResourceByteShieldScdnRuleTemplateDomainUnbind(),
+		"byteshield_scdn_rule_template_switch":        ResourceByteShieldScdnRuleTemplateSwitch(),
 	}
 }
 

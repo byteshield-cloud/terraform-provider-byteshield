@@ -1,6 +1,6 @@
 # SCDN Domain Group Management Example
 
-This example demonstrates how to manage SCDN Domain Groups using the EdgeNext Terraform provider.
+This example demonstrates how to manage SCDN Domain Groups using the Byteshield Terraform provider.
 
 ## Features
 
@@ -17,12 +17,12 @@ This example demonstrates how to manage SCDN Domain Groups using the EdgeNext Te
 cp terraform.tfvars.example terraform.tfvars
 ```
 
-2. Set your EdgeNext credentials as environment variables:
+2. Set your Byteshield credentials as environment variables:
 
 ```bash
-export EDGENEXT_ACCESS_KEY="your-access-key"
-export EDGENEXT_SECRET_KEY="your-secret-key"
-export EDGENEXT_API_HOST="https://apiv4.lalcsafe.com"
+export BYTESHIELD_ACCESS_KEY="your-access-key"
+export BYTESHIELD_SECRET_KEY="your-secret-key"
+export BYTESHIELD_API_HOST="https://apiv4.lalcsafe.com"
 ```
 
 3. Initialize Terraform:

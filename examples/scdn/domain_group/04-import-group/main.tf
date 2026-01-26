@@ -15,19 +15,19 @@ provider "byteshield" {
 
 variable "access_key" {
   type        = string
-  description = "EdgeNext access key"
+  description = "Byteshield access key"
   sensitive   = true
 }
 
 variable "secret_key" {
   type        = string
-  description = "EdgeNext secret key"
+  description = "Byteshield secret key"
   sensitive   = true
 }
 
 variable "endpoint" {
   type        = string
-  description = "EdgeNext API endpoint"
+  description = "Byteshield API endpoint"
   default     = "https://apiv4.lalcsafe.com"
 }
 

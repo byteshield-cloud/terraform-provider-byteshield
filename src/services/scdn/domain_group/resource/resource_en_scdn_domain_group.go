@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func ResourceEdgenextScdnDomainGroup() *schema.Resource {
+func ResourceByteshieldScdnDomainGroup() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceScdnDomainGroupCreate,
 		Read:   resourceScdnDomainGroupRead,

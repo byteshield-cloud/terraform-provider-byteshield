@@ -67,5 +67,5 @@ This happens when you run `terraform apply` without first running `terraform imp
 **Problem: "Group name mismatch"**
 
 Make sure the `group_name` variable matches the actual name of the group you imported. You can get this from:
-- The EdgeNext console
+- The Byteshield console
 - Running example `02-query-groups`

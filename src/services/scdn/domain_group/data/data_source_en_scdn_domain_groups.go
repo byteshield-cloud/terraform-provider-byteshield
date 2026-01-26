@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func DataSourceEdgenextScdnDomainGroups() *schema.Resource {
+func DataSourceByteshieldScdnDomainGroups() *schema.Resource {
 	return &schema.Resource{
 		Read: dataSourceScdnDomainGroupsRead,
 
