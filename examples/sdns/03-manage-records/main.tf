@@ -46,12 +46,12 @@ variable "record_value" {
   type        = string
 }
 
-resource "byteshield_dns_domain" "example" {
+resource "byteshield_sdns_domain" "example" {
   domain = var.domain_name
 }
 
-resource "byteshield_dns_record" "example" {
-  domain_id = tonumber(byteshield_dns_domain.example.id)
+resource "byteshield_sdns_record" "example" {
+  domain_id = tonumber(byteshield_sdns_domain.example.id)
   name      = var.record_name
   type      = "A"
   view      = "any"
@@ -61,13 +61,13 @@ resource "byteshield_dns_record" "example" {
 }
 
 output "record_id" {
-  value = byteshield_dns_record.example.id
+  value = byteshield_sdns_record.example.id
 }
 
-data "byteshield_dns_record" "matched" {
-  domain_id = tonumber(byteshield_dns_domain.example.id)
+data "byteshield_sdns_records" "matched" {
+  domain_id = tonumber(byteshield_sdns_domain.example.id)
 }
 
 output "all_records" {
-  value = data.byteshield_dns_record.matched.records
+  value = data.byteshield_sdns_records.matched.records
 }

@@ -8,8 +8,12 @@ from pathlib import Path
 
 def get_module_name(name):
     """Extract the functional module name from a resource/data source name."""
-    # Remove prefix "scdn_" if present
-    name = name.replace("scdn_", "", 1) if name.startswith("scdn_") else name
+    # Remove service prefixes
+    prefixes = ["scdn_", "sdns_"]
+    for prefix in prefixes:
+        if name.startswith(prefix):
+            name = name.replace(prefix, "", 1)
+            break
     
     # Map resource patterns to module names (order matters - more specific first)
     patterns = [
@@ -29,8 +33,12 @@ def get_module_name(name):
         ("network_speed", "Network Speed"),
         ("rule_template", "Rule Template"),
         ("log_download", "Log Download"),
+        ("domain_group", "Domain Group"),
+        ("domain_groups", "Domain Group"),
         ("domain", "Domain"),
         ("domains", "Domain"),
+        ("record", "Record"),
+        ("records", "Record"),
         ("origin", "Origin"),
         ("origins", "Origin"),
     ]
@@ -79,46 +87,60 @@ def get_doc_files():
     # Organize by category and module
     categories = {
         "SCDN": {
+            "prefix": "scdn_",
             "data_sources": [],
             "resources": [],
-            "modules": {}  # Add modules structure
+            "modules": {}
+        },
+        "SDNS": {
+            "prefix": "sdns_",
+            "data_sources": [],
+            "resources": [],
+            "modules": {}
         }
     }
     
-    # Group SCDN resources by module
-    for ds in data_sources:
-        if ds["name"].startswith("scdn_"):
-            categories["SCDN"]["data_sources"].append(ds)
-            module_name = get_module_name(ds["name"])
-            if module_name not in categories["SCDN"]["modules"]:
-                categories["SCDN"]["modules"][module_name] = {
-                    "data_sources": [],
-                    "resources": []
-                }
-            categories["SCDN"]["modules"][module_name]["data_sources"].append(ds)
-    
-    for res in resources:
-        if res["name"].startswith("scdn_"):
-            categories["SCDN"]["resources"].append(res)
-            module_name = get_module_name(res["name"])
-            if module_name not in categories["SCDN"]["modules"]:
-                categories["SCDN"]["modules"][module_name] = {
-                    "data_sources": [],
-                    "resources": []
-                }
-            categories["SCDN"]["modules"][module_name]["resources"].append(res)
-    
-    # Convert modules dict to list for JSON serialization
-    scdn_modules = []
-    for module_name in sorted(categories["SCDN"]["modules"].keys()):
-        module = categories["SCDN"]["modules"][module_name]
-        scdn_modules.append({
-            "module_name": module_name,
-            "data_sources": sorted(module["data_sources"], key=lambda x: x["name"]),
-            "resources": sorted(module["resources"], key=lambda x: x["name"])
-        })
-    
-    categories["SCDN"]["modules"] = scdn_modules
+    # Group resources by category and module
+    for cat_name, cat_info in categories.items():
+        prefix = cat_info["prefix"]
+        
+        # Process data sources
+        for ds in data_sources:
+            if ds["name"].startswith(prefix):
+                cat_info["data_sources"].append(ds)
+                module_name = get_module_name(ds["name"])
+                if module_name not in cat_info["modules"]:
+                    cat_info["modules"][module_name] = {
+                        "data_sources": [],
+                        "resources": []
+                    }
+                cat_info["modules"][module_name]["data_sources"].append(ds)
+        
+        # Process resources
+        for res in resources:
+            if res["name"].startswith(prefix):
+                cat_info["resources"].append(res)
+                module_name = get_module_name(res["name"])
+                if module_name not in cat_info["modules"]:
+                    cat_info["modules"][module_name] = {
+                        "data_sources": [],
+                        "resources": []
+                    }
+                cat_info["modules"][module_name]["resources"].append(res)
+        
+        # Convert modules dict to list for JSON serialization
+        module_list = []
+        for module_name in sorted(cat_info["modules"].keys()):
+            module = cat_info["modules"][module_name]
+            module_list.append({
+                "module_name": module_name,
+                "data_sources": sorted(module["data_sources"], key=lambda x: x["name"]),
+                "resources": sorted(module["resources"], key=lambda x: x["name"])
+            })
+        
+        cat_info["modules"] = module_list
+        # Remove internal prefix before returning
+        del cat_info["prefix"]
     
     return {
         "index": "docs/index.html.markdown",

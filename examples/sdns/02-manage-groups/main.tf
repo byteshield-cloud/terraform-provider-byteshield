@@ -41,24 +41,24 @@ variable "domain_name" {
   type        = string
 }
 
-resource "byteshield_dns_domain" "example" {
+resource "byteshield_sdns_domain" "example" {
   domain = var.domain_name
 }
 
-resource "byteshield_dns_group" "example" {
+resource "byteshield_sdns_domain_group" "example" {
   group_name = var.group_name
   remark     = "Managed by Terraform"
-  domain_ids = [byteshield_dns_domain.example.id]
+  domain_ids = [byteshield_sdns_domain.example.id]
 }
 
 output "group_id" {
-  value = byteshield_dns_group.example.id
+  value = byteshield_sdns_domain_group.example.id
 }
 
-data "byteshield_dns_group" "matched" {
-  group_name = byteshield_dns_group.example.group_name
+data "byteshield_sdns_domain_groups" "matched" {
+  group_name = byteshield_sdns_domain_group.example.group_name
 }
 
 output "matched_groups" {
-  value = data.byteshield_dns_group.matched.groups
+  value = data.byteshield_sdns_domain_groups.matched.groups
 }

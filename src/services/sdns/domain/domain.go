@@ -9,13 +9,13 @@ import (
 // Resources returns all domain-related resources
 func Resources() map[string]*schema.Resource {
 	return map[string]*schema.Resource{
-		"byteshield_dns_domain": resource.ResourceByteshieldDnsDomain(),
+		"byteshield_sdns_domain": resource.ResourceByteshieldDnsDomain(),
 	}
 }
 
 // DataSources returns all domain-related data sources
 func DataSources() map[string]*schema.Resource {
 	return map[string]*schema.Resource{
-		"byteshield_dns_domain": data.DataSourceByteshieldDnsDomain(),
+		"byteshield_sdns_domains": data.DataSourceByteshieldDnsDomain(),
 	}
 }

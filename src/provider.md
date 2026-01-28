@@ -87,6 +87,17 @@ The following arguments are supported in the `provider` block:
 
 Resources List
 
+Security DNS (SDNS)
+Data Source
+byteshield_sdns_domains
+byteshield_sdns_domain_groups
+byteshield_sdns_records
+
+Resource
+byteshield_sdns_domain
+byteshield_sdns_domain_group
+byteshield_sdns_record
+
 Security CDN (SCDN)
 Data Source
 byteshield_scdn_domain

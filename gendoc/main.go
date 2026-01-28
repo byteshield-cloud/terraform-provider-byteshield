@@ -353,6 +353,10 @@ func genMainPage(filePath string, products []Product) {
 
 // genDoc generating doc for data source and resource
 func genDoc(product, dtype, fpath, name string, resource *schema.Resource) {
+	if resource == nil {
+		message("[SKIP!]%s '%s' not found in provider map, skip document generation\n", dtype, name)
+		return
+	}
 	data := map[string]string{
 		"product":           product,
 		"name":              name,
@@ -379,6 +383,8 @@ func genDoc(product, dtype, fpath, name string, resource *schema.Resource) {
 	switch productDir {
 	case "security cdn(scdn)", "security cdn", "scdn":
 		productDir = "scdn"
+	case "security dns(sdns)", "security dns", "sdns":
+		productDir = "sdns"
 	}
 
 	// Try to find the file, first in the main directory, then in subdirectories
@@ -392,14 +398,14 @@ func genDoc(product, dtype, fpath, name string, resource *schema.Resource) {
 	filePath := filepath.Join(fpath, filename)
 	raw, err = os.ReadFile(filePath)
 
-	// If not found and it's SCDN, try subdirectories
-	if err != nil && productDir == "scdn" {
-		// List subdirectories in scdn
-		scdnPath := filepath.Join(fpath, "services", "scdn")
-		if entries, err2 := os.ReadDir(scdnPath); err2 == nil {
+	// If not found and it's SCDN or SDNS, try subdirectories
+	if err != nil && (productDir == "scdn" || productDir == "sdns") {
+		// List subdirectories in service path
+		servicePath := filepath.Join(fpath, "services", productDir)
+		if entries, err2 := os.ReadDir(servicePath); err2 == nil {
 			for _, entry := range entries {
 				if entry.IsDir() {
-					subDirPath := filepath.Join(scdnPath, entry.Name(), fmt.Sprintf("%s_%s_%s.md", dtype, cloudMarkShort, data["resource"]))
+					subDirPath := filepath.Join(servicePath, entry.Name(), fmt.Sprintf("%s_%s_%s.md", dtype, cloudMarkShort, data["resource"]))
 					if raw2, err2 := os.ReadFile(subDirPath); err2 == nil {
 						raw = raw2
 						err = nil
@@ -582,8 +588,18 @@ func genDoc(product, dtype, fpath, name string, resource *schema.Resource) {
 	}
 	data["attributes"] = strings.Join(attributes, "\n")
 	if dtype == "resource" {
-		idAttribute := "* `id` - ID of the resource.\n"
-		data["attributes"] = idAttribute + data["attributes"]
+		// Check if id is already defined in attributes
+		hasID := false
+		for _, attr := range attributes {
+			if strings.HasPrefix(attr, "* `id` -") {
+				hasID = true
+				break
+			}
+		}
+		if !hasID {
+			idAttribute := "* `id` - ID of the resource.\n"
+			data["attributes"] = idAttribute + data["attributes"]
+		}
 	}
 
 	filename = filepath.Join(docRoot, dtype[:1], fmt.Sprintf("%s.html.markdown", data["resource"]))
@@ -843,8 +859,12 @@ func replace(input, from, to string) string {
 
 // getModuleName extracts the functional module name from a resource/data source name
 func getModuleName(name string) string {
-	// Remove prefix "byteshield_scdn_"
-	name = strings.TrimPrefix(name, "byteshield_scdn_")
+	// Remove common prefix
+	name = strings.TrimPrefix(name, "byteshield_")
+
+	// Remove service prefixes
+	name = strings.TrimPrefix(name, "scdn_")
+	name = strings.TrimPrefix(name, "sdns_")
 
 	// Map resource patterns to module names (order matters - more specific first)
 	// Check longer patterns first to avoid partial matches
@@ -868,8 +888,12 @@ func getModuleName(name string) string {
 		{"network_speed", "Network Speed"},
 		{"rule_template", "Rule Template"},
 		{"log_download", "Log Download"},
+		{"domain_group", "Domain Group"},
+		{"domain_groups", "Domain Group"},
 		{"domain", "Domain"},
 		{"domains", "Domain"},
+		{"record", "Record"},
+		{"records", "Record"},
 		{"origin", "Origin"},
 		{"origins", "Origin"},
 	}
@@ -943,6 +967,11 @@ func groupByModule(resources, dataSources []string) []ModuleGroup {
 // getResourceDesc returns a friendly description for resources
 func getResourceDesc(resourceName string) string {
 	descriptions := map[string]string{
+		// SDNS resources
+		"byteshield_sdns_domain":       "SDNS domain configuration",
+		"byteshield_sdns_domain_group": "SDNS domain group management",
+		"byteshield_sdns_record":       "SDNS record configuration",
+
 		// SCDN resources
 		"byteshield_scdn_domain":                                    "SCDN domain configuration",
 		"byteshield_scdn_origin":                                    "SCDN origin servers",
@@ -990,6 +1019,11 @@ func getResourceDesc(resourceName string) string {
 // getDataSourceDesc returns a friendly description for data sources
 func getDataSourceDesc(dataSourceName string) string {
 	descriptions := map[string]string{
+		// SDNS data sources
+		"byteshield_sdns_domains":       "SDNS domains",
+		"byteshield_sdns_domain_groups": "SDNS domain groups",
+		"byteshield_sdns_records":       "SDNS records",
+
 		// SCDN data sources
 		"byteshield_scdn_domain":                                       "SCDN domain details",
 		"byteshield_scdn_domains":                                      "SCDN domains",

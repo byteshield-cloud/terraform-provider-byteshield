@@ -9,13 +9,13 @@ import (
 // Resources returns all record-related resources
 func Resources() map[string]*schema.Resource {
 	return map[string]*schema.Resource{
-		"byteshield_dns_record": resource.ResourceByteshieldDnsRecord(),
+		"byteshield_sdns_record": resource.ResourceByteshieldDnsRecord(),
 	}
 }
 
 // DataSources returns all record-related data sources
 func DataSources() map[string]*schema.Resource {
 	return map[string]*schema.Resource{
-		"byteshield_dns_record": data.DataSourceByteshieldDnsRecord(),
+		"byteshield_sdns_records": data.DataSourceByteshieldDnsRecord(),
 	}
 }

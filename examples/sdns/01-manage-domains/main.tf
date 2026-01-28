@@ -36,22 +36,22 @@ variable "domain_name" {
   type        = string
 }
 
-resource "byteshield_dns_domain" "example" {
+resource "byteshield_sdns_domain" "example" {
   domain = var.domain_name
 }
 
 output "domain_id" {
-  value = byteshield_dns_domain.example.id
+  value = byteshield_sdns_domain.example.id
 }
 
 output "domain_status" {
-  value = byteshield_dns_domain.example.status
+  value = byteshield_sdns_domain.example.status
 }
 
-data "byteshield_dns_domain" "matched" {
-  domain = byteshield_dns_domain.example.domain
+data "byteshield_sdns_domains" "matched" {
+  domain = byteshield_sdns_domain.example.domain
 }
 
 output "matched_domains" {
-  value = data.byteshield_dns_domain.matched.domains
+  value = data.byteshield_sdns_domains.matched.domains
 }

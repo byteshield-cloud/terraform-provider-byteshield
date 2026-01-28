@@ -89,6 +89,38 @@ The following arguments are supported in the `provider` block:
 
 The ByteShield provider supports the following resource types:
 
+### Security DNS (SDNS)
+
+#### Domain
+
+##### Resources
+
+* [`byteshield_sdns_domain`](resources/sdns_domain) - Manage SDNS domain configuration
+
+##### Data Sources
+
+* [`byteshield_sdns_domains`](data-sources/sdns_domains) - Query SDNS domains
+
+#### Domain Group
+
+##### Resources
+
+* [`byteshield_sdns_domain_group`](resources/sdns_domain_group) - Manage SDNS domain group management
+
+##### Data Sources
+
+* [`byteshield_sdns_domain_groups`](data-sources/sdns_domain_groups) - Query SDNS domain groups
+
+#### Record
+
+##### Resources
+
+* [`byteshield_sdns_record`](resources/sdns_record) - Manage SDNS record configuration
+
+##### Data Sources
+
+* [`byteshield_sdns_records`](data-sources/sdns_records) - Query SDNS records
+
 ### Security CDN (SCDN)
 
 #### Access
