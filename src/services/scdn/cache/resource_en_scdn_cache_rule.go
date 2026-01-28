@@ -219,15 +219,15 @@ func ResourceByteShieldScdnCacheRule() *schema.Resource {
 						},
 						"cache_share": {
 							Type:        schema.TypeList,
-							Required:    true,
+							Optional:    true,
 							MaxItems:    1,
 							Description: "Cache sharing configuration",
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"scheme": {
 										Type:        schema.TypeString,
-										Required:    true,
-										Description: "HTTP/HTTPS cache sharing method: 'http' or 'https'",
+										Optional:    true,
+										Description: "HTTP/HTTPS cache sharing method: '', 'http' or 'https'",
 									},
 								},
 							},
@@ -914,14 +914,14 @@ func buildCacheRuleConfFromSchema(d *schema.ResourceData) (*scdn.CacheRuleConf, 
 		}
 	}
 
-	// Build cache_share (required)
+	// Build cache_share (optional)
 	if cacheShareList, ok := confMap["cache_share"].([]interface{}); ok && len(cacheShareList) > 0 {
 		cacheShareMap := cacheShareList[0].(map[string]interface{})
 		conf.CacheShare = &scdn.CacheShare{
 			Scheme: cacheShareMap["scheme"].(string),
 		}
 	} else {
-		return nil, fmt.Errorf("cache_share is required")
+		log.Printf("[DEBUG] cache_share not provided in configuration")
 	}
 
 	return conf, nil
@@ -936,6 +936,7 @@ func buildCacheRuleConfToSchema(conf *scdn.CacheRuleConf) map[string]interface{}
 		"browser_cache_rule": []interface{}{},
 		"cache_errstatus":    []interface{}{},
 		"cache_url_rewrite":  []interface{}{},
+		"cache_share":        []interface{}{},
 	}
 
 	// Override with actual values if API returned them
@@ -996,7 +997,7 @@ func buildCacheRuleConfToSchema(conf *scdn.CacheRuleConf) map[string]interface{}
 		confMap["cache_url_rewrite"] = []interface{}{urlRewriteMap}
 	}
 
-	// cache_share is required, so it should always be present
+	// cache_share is optional, so it might be nil
 	if conf.CacheShare != nil {
 		cacheShareMap := map[string]interface{}{
 			"scheme": conf.CacheShare.Scheme,
