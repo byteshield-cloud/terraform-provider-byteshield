@@ -186,6 +186,17 @@ The ByteShield provider supports the following resource types:
 * [`byteshield_scdn_domain_templates`](data-sources/scdn_domain_templates) - Query SCDN domain templates
 * [`byteshield_scdn_domains`](data-sources/scdn_domains) - Query SCDN domains
 
+#### Domain Group
+
+##### Resources
+
+* [`byteshield_scdn_domain_group`](resources/scdn_domain_group) - Manage scdn domain group
+
+##### Data Sources
+
+* [`byteshield_scdn_domain_group_domains`](data-sources/scdn_domain_group_domains) - Query scdn domain group domains
+* [`byteshield_scdn_domain_groups`](data-sources/scdn_domain_groups) - Query scdn domain groups
+
 #### Log Download
 
 ##### Resources
@@ -272,4 +283,16 @@ The ByteShield provider supports the following resource types:
 * [`byteshield_scdn_security_protection_template_unbound_domains`](data-sources/scdn_security_protection_template_unbound_domains) - Query SCDN security protection template unbound domains
 * [`byteshield_scdn_security_protection_templates`](data-sources/scdn_security_protection_templates) - Query SCDN security protection templates
 * [`byteshield_scdn_security_protection_waf_config`](data-sources/scdn_security_protection_waf_config) - Query SCDN WAF protection configuration
+
+#### User IP
+
+##### Resources
+
+* [`byteshield_scdn_user_ip`](resources/scdn_user_ip) - Manage scdn user ip
+* [`byteshield_scdn_user_ip_item`](resources/scdn_user_ip_item) - Manage scdn user ip item
+
+##### Data Sources
+
+* [`byteshield_scdn_user_ip_items`](data-sources/scdn_user_ip_items) - Query scdn user ip items
+* [`byteshield_scdn_user_ips`](data-sources/scdn_user_ips) - Query scdn user ips
 

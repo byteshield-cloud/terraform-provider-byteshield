@@ -1,17 +1,10 @@
----
-subcategory: "SCDN"
-layout: "byteshield"
-page_title: "Byteshield: byteshield_scdn_user_ip_items"
-sidebar_current: "docs-byteshield-datasource-scdn-user-ip-items"
-description: |-
-  Use this data source to query items in an SCDN User IP List.
----
-
-# Data Source: byteshield_scdn_user_ip_items
+# byteshield_scdn_user_ip_items
 
 Use this data source to query items within a specific SCDN User IP List.
 
-## Example Usage
+Example Usage
+
+Query items in a user IP list
 
 ```hcl
 data "byteshield_scdn_user_ip_items" "items" {
@@ -24,7 +17,7 @@ output "ip_items" {
 }
 ```
 
-## Argument Reference
+Argument Reference
 
 The following arguments are supported:
 
@@ -33,7 +26,7 @@ The following arguments are supported:
 * `per_page` - (Optional) The number of items per page. Defaults to 10.
 * `ip` - (Optional) Filter by IP address.
 
-## Attributes Reference
+Attributes Reference
 
 The following attributes are exported:
 

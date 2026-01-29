@@ -1,17 +1,21 @@
 ---
-subcategory: "SCDN"
+subcategory: "Security CDN (SCDN)"
 layout: "byteshield"
-page_title: "Byteshield: byteshield_scdn_user_ip_item"
-sidebar_current: "docs-byteshield-resource-scdn-user-ip-item"
+page_title: "ByteShield: byteshield_scdn_user_ip_item"
+sidebar_current: "docs-byteshield-resource-scdn_user_ip_item"
 description: |-
-  Provides a resource to manage SCDN User IP Items.
+  # byteshield_scdn_user_ip_item
 ---
 
-# Resource: byteshield_scdn_user_ip_item
+# byteshield_scdn_user_ip_item
+
+# byteshield_scdn_user_ip_item
 
 Provides a resource to manage individual IP items within an SCDN User IP List.
 
 ## Example Usage
+
+### Create a user IP item
 
 ```hcl
 resource "byteshield_scdn_user_ip" "list" {
@@ -29,17 +33,18 @@ resource "byteshield_scdn_user_ip_item" "item" {
 
 The following arguments are supported:
 
-* `user_ip_id` - (Required) The ID of the User IP List to which this item belongs.
-* `ip` - (Required) The IP address or CIDR block.
-* `remark` - (Optional) The remark or description for the IP item.
+* `ip` - (Required, String) The IP address or CIDR
+* `user_ip_id` - (Required, Int) The ID of the IP list to which this item belongs
+* `remark` - (Optional, String) Remark for the IP item
 
 ## Attributes Reference
 
 In addition to all arguments above, the following attributes are exported:
 
-* `id` - The unique ID (UUID) of the IP item.
-* `format_created_at` - The formatted creation time.
-* `format_updated_at` - The formatted last update time.
+* `format_created_at` - Creation time
+* `format_updated_at` - Last update time
+* `id` - The ID (UUID) of the IP item
+
 
 ## Import
 
@@ -49,3 +54,5 @@ SCDN User IP Items can be imported using the combined `user_ip_id` and `id` sepa
 $ terraform import byteshield_scdn_user_ip_item.example <user_ip_id>:<uuid-of-item>
 # Example:
 $ terraform import byteshield_scdn_user_ip_item.example 123:681c5d277ef73537f36fbdb6
+```
+

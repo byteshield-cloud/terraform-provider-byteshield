@@ -35,6 +35,7 @@ def get_module_name(name):
         ("log_download", "Log Download"),
         ("domain_group", "Domain Group"),
         ("domain_groups", "Domain Group"),
+        ("user_ip", "User IP"),
         ("domain", "Domain"),
         ("domains", "Domain"),
         ("record", "Record"),

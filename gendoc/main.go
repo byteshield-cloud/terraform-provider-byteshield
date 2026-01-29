@@ -896,6 +896,7 @@ func getModuleName(name string) string {
 		{"records", "Record"},
 		{"origin", "Origin"},
 		{"origins", "Origin"},
+		{"user_ip", "User IP"},
 	}
 
 	// Check patterns in order (most specific first)
