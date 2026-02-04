@@ -256,6 +256,7 @@ The ByteShield provider supports the following resource types:
 * [`byteshield_scdn_rule_template`](resources/scdn_rule_template) - Manage SCDN rule templates
 * [`byteshield_scdn_rule_template_domain_bind`](resources/scdn_rule_template_domain_bind) - Manage SCDN rule template domain bindings
 * [`byteshield_scdn_rule_template_domain_unbind`](resources/scdn_rule_template_domain_unbind) - Manage SCDN rule template domain unbindings
+* [`byteshield_scdn_rule_template_switch`](resources/scdn_rule_template_switch) - Manage scdn rule template switch
 
 ##### Data Sources
 

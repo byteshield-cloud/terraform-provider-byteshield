@@ -15,6 +15,7 @@ func ResourceByteShieldScdnSecurityProtectionTemplateDomainBind() *schema.Resour
 	return &schema.Resource{
 		Create: resourceScdnSecurityProtectionTemplateDomainBindCreate,
 		Read:   resourceScdnSecurityProtectionTemplateDomainBindRead,
+		Update: resourceScdnSecurityProtectionTemplateDomainBindUpdate,
 		Delete: resourceScdnSecurityProtectionTemplateDomainBindDelete,
 
 		Importer: &schema.ResourceImporter{
@@ -26,13 +27,12 @@ func ResourceByteShieldScdnSecurityProtectionTemplateDomainBind() *schema.Resour
 				Type:        schema.TypeInt,
 				Required:    true,
 				ForceNew:    true,
-				Description: "Business ID (template ID)",
+				Description: "Business ID (template ID) to bind domains to.",
 			},
 			"domain_ids": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				ForceNew:    true,
-				Description: "Domain ID list",
+				Description: "List of domain IDs to bind to the template.",
 				Elem: &schema.Schema{
 					Type: schema.TypeInt,
 				},
@@ -40,8 +40,7 @@ func ResourceByteShieldScdnSecurityProtectionTemplateDomainBind() *schema.Resour
 			"bind_business_ids": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				ForceNew:    true,
-				Description: "Bind business ID list",
+				Description: "List of business IDs to bind.",
 				Elem: &schema.Schema{
 					Type: schema.TypeInt,
 				},
@@ -49,8 +48,7 @@ func ResourceByteShieldScdnSecurityProtectionTemplateDomainBind() *schema.Resour
 			"group_ids": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				ForceNew:    true,
-				Description: "Group ID list",
+				Description: "Group ID list. If both group_ids and domain_ids are provided, the intersection of domains from the groups and the domain IDs will be used for binding.",
 				Elem: &schema.Schema{
 					Type: schema.TypeInt,
 				},
@@ -124,6 +122,11 @@ func resourceScdnSecurityProtectionTemplateDomainBindCreate(d *schema.ResourceDa
 	return resourceScdnSecurityProtectionTemplateDomainBindRead(d, m)
 }
 
+func resourceScdnSecurityProtectionTemplateDomainBindUpdate(d *schema.ResourceData, m interface{}) error {
+	// Update operation is the same as create - call the bind API again with new parameters
+	return resourceScdnSecurityProtectionTemplateDomainBindCreate(d, m)
+}
+
 func resourceScdnSecurityProtectionTemplateDomainBindRead(d *schema.ResourceData, m interface{}) error {
 	// Parse business_id from resource ID if not set in state
 	businessID := d.Get("business_id").(int)
@@ -155,10 +158,10 @@ func resourceScdnSecurityProtectionTemplateDomainBindRead(d *schema.ResourceData
 }
 
 func resourceScdnSecurityProtectionTemplateDomainBindDelete(d *schema.ResourceData, m interface{}) error {
-	// Unbinding is not directly supported by the API
-	// The binding can be removed by updating the template or domain configuration
-	// For now, we just remove the resource from state
-	log.Printf("[INFO] Unbinding SCDN security protection template domain: business_id=%d", d.Get("business_id").(int))
+	// Deletion is not supported for this resource.
+	// The binding can be modified by updating the resource with empty domain lists.
+	// Removing the resource from state only.
+	log.Printf("[WARN] Deletion is not supported for SCDN security protection template domain bind resource. Removing from state only.")
 	d.SetId("")
 	return nil
 }
