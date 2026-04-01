@@ -35,6 +35,24 @@ resource "byteshield_scdn_cache_rule" "example" {
 }
 ```
 
+### Create cache rule with minimal config (server provides defaults)
+
+```hcl
+# When only nocache = false is set, the server will populate default values for
+# cache_rule and other sub-blocks. Terraform accepts these server-side defaults
+# without showing drift on subsequent plans.
+resource "byteshield_scdn_cache_rule" "example" {
+  business_id   = 12345
+  business_type = "tpl"
+  name          = "minimal-cache-rule"
+  remark        = "minimal config"
+
+  conf {
+    nocache = false
+  }
+}
+```
+
 ### Create cache rule with no cache
 
 ```hcl
