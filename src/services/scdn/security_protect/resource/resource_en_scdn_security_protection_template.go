@@ -3,6 +3,7 @@ package resource
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/byteshield-cloud/terraform-provider-byteshield/src/connectivity"
 	"github.com/byteshield-cloud/terraform-provider-byteshield/src/services/scdn"
@@ -79,6 +80,11 @@ func ResourceByteShieldScdnSecurityProtectionTemplate() *schema.Resource {
 				Computed:    true,
 				Description: "Template type: global, only_domain, more_domain",
 			},
+			"app_type": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "App type (e.g., security_protection)",
+			},
 			"created_at": {
 				Type:        schema.TypeString,
 				Computed:    true,
@@ -92,7 +98,8 @@ func ResourceByteShieldScdnSecurityProtectionTemplate() *schema.Resource {
 			"fail_domains": {
 				Type:        schema.TypeMap,
 				Computed:    true,
-				Description: "Failed domains",
+				Deprecated:  "This attribute is deprecated and will be removed in a future version. Please check the apply output or logs for failure details.",
+				Description: "Failed domains (Deprecated)",
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
@@ -152,15 +159,13 @@ func resourceScdnSecurityProtectionTemplateCreate(d *schema.ResourceData, m inte
 		return fmt.Errorf("error setting business_id: %w", err)
 	}
 
-	// Set fail_domains if any
+	// Report fail_domains if any
 	if len(response.Data.FailDomains) > 0 {
-		failDomainsMap := make(map[string]interface{})
+		var failMsg []string
 		for k, v := range response.Data.FailDomains {
-			failDomainsMap[k] = v
+			failMsg = append(failMsg, fmt.Sprintf("%s: %s", k, v))
 		}
-		if err := d.Set("fail_domains", failDomainsMap); err != nil {
-			log.Printf("[WARN] Failed to set fail_domains: %v", err)
-		}
+		return fmt.Errorf("security protection template created but failed to bind some domains: %s", strings.Join(failMsg, "; "))
 	}
 
 	return resourceScdnSecurityProtectionTemplateRead(d, m)
@@ -176,39 +181,22 @@ func resourceScdnSecurityProtectionTemplateRead(d *schema.ResourceData, m interf
 		return fmt.Errorf("business_id is required for reading template")
 	}
 
-	// Search for template by ID
+	// Search for template by ID using optimized parameters
 	req := scdn.SecurityProtectionTemplateSearchRequest{
-		TplType:  "more_domain", // Default, can be adjusted
+		TplType:  "all", // Search across all types (global, only_domain, more_domain)
+		TplIDs:   []int{businessID},
 		Page:     1,
-		PageSize: 100,
+		PageSize: 1,
 	}
 
 	response, err := service.SearchSecurityProtectionTemplates(req)
 	if err != nil {
-		return fmt.Errorf("failed to search templates: %w", err)
+		return fmt.Errorf("failed to search template by ID %d: %w", businessID, err)
 	}
 
-	// Find the template by business_id
 	var foundTemplate *scdn.SecurityProtectionTemplateInfo
-	for _, template := range response.Data.Templates {
-		if template.ID == businessID {
-			foundTemplate = &template
-			break
-		}
-	}
-
-	if foundTemplate == nil {
-		// Try to get global template
-		globalResp, err := service.GetMemberGlobalTemplate()
-		if err != nil {
-			return fmt.Errorf("failed to get global template: %w", err)
-		}
-		if globalResp.Data.Template != nil && globalResp.Data.Template.ID == businessID {
-			foundTemplate = globalResp.Data.Template
-			if err := d.Set("bind_domain_count", globalResp.Data.BindDomainCount); err != nil {
-				log.Printf("[WARN] Failed to set bind_domain_count: %v", err)
-			}
-		}
+	if len(response.Data.Templates) > 0 {
+		foundTemplate = &response.Data.Templates[0]
 	}
 
 	if foundTemplate == nil {
@@ -226,9 +214,15 @@ func resourceScdnSecurityProtectionTemplateRead(d *schema.ResourceData, m interf
 	if err := d.Set("type", foundTemplate.Type); err != nil {
 		return fmt.Errorf("error setting type: %w", err)
 	}
+	if err := d.Set("app_type", foundTemplate.AppType); err != nil {
+		log.Printf("[WARN] Failed to set app_type: %v", err)
+	}
 	if err := d.Set("created_at", foundTemplate.CreatedAt); err != nil {
 		log.Printf("[WARN] Failed to set created_at: %v", err)
 	}
+
+	// For compatibility and to avoid perpetual diff, set an empty map
+	_ = d.Set("fail_domains", map[string]string{})
 
 	return nil
 }

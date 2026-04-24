@@ -193,12 +193,13 @@ type SecurityProtectionTemplateGetMemberGlobalData struct {
 type SecurityProtectionTemplateInfo struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
-	Type        string `json:"type"` // domain, template, global
+	Type        string `json:"type"` // global, only_domain, more_domain (updated in backend)
 	CreatedAt   string `json:"created_at"`
 	Remark      string `json:"remark,omitempty"`
 	SubMemberID int    `json:"sub_member_id,omitempty"`
 	DomainID    int    `json:"domain_id,omitempty"` // When querying domain template, this field has value
 	DomainCount int    `json:"domain_count,omitempty"`
+	AppType     string `json:"app_type,omitempty"` // security_protection
 }
 
 // SecurityProtectionTemplateCreateRequest create template request
@@ -243,11 +244,12 @@ type SecurityProtectionTemplateCreateDomainData struct {
 
 // SecurityProtectionTemplateSearchRequest search template list request
 type SecurityProtectionTemplateSearchRequest struct {
-	TplType    string `json:"tpl_type"`              // global, only_domain, more_domain
+	TplType    string `json:"tpl_type"`              // global, only_domain, more_domain, all
 	SearchType string `json:"search_type,omitempty"` // Search type
 	SearchKey  string `json:"search_key,omitempty"`  // Search keyword
 	Page       int    `json:"page"`                  // Page number
 	PageSize   int    `json:"page_size"`             // Page size
+	TplIDs     []int  `json:"tpl_ids,omitempty"`     // Template ID list
 }
 
 // SecurityProtectionTemplateSearchResponse search template list response
