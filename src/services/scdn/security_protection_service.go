@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/byteshield-cloud/terraform-provider-byteshield/src/connectivity"
 )
@@ -184,20 +185,37 @@ func (s *ScdnService) GetMemberGlobalTemplate() (*SecurityProtectionTemplateGetM
 		return nil, fmt.Errorf("API error: %s (code: %d)", scdnResp.Status.Message, scdnResp.Status.Code)
 	}
 
-	// Convert response
-	var response SecurityProtectionTemplateGetMemberGlobalResponse
-	if scdnResp != nil {
-		dataBytes, err := json.Marshal(scdnResp)
+	// Build response
+	response := &SecurityProtectionTemplateGetMemberGlobalResponse{
+		Status: Status{
+			Code:    scdnResp.Status.Code,
+			Message: scdnResp.Status.Message,
+		},
+	}
+
+	// Parse data field
+	if scdnResp.Data != nil {
+		dataBytes, err := json.Marshal(scdnResp.Data)
 		if err != nil {
 			return nil, fmt.Errorf("failed to marshal response data: %w", err)
 		}
+		log.Printf("[DEBUG] GetMemberGlobalTemplate data: %s", string(dataBytes))
 
-		if err := json.Unmarshal(dataBytes, &response); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal response data: %w", err)
+		var data SecurityProtectionTemplateGetMemberGlobalData
+		if err := json.Unmarshal(dataBytes, &data); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal member global template data: %w", err)
+		}
+		response.Data = data
+
+		if data.Template != nil {
+			log.Printf("[DEBUG] GetMemberGlobalTemplate parsed: Template ID=%d, Name=%s, BindDomainCount=%d",
+				data.Template.ID, data.Template.Name, data.BindDomainCount)
+		} else {
+			log.Printf("[DEBUG] GetMemberGlobalTemplate: Template is nil, BindDomainCount=%d", data.BindDomainCount)
 		}
 	}
 
-	return &response, nil
+	return response, nil
 }
 
 // CreateSecurityProtectionTemplate creates a security protection template

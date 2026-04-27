@@ -269,6 +269,7 @@ The ByteShield provider supports the following resource types:
 ##### Resources
 
 * [`byteshield_scdn_security_protection_ddos_config`](resources/scdn_security_protection_ddos_config) - Manage SCDN DDoS protection configuration
+* [`byteshield_scdn_security_protection_domain_template`](resources/scdn_security_protection_domain_template) - Manage scdn security protection domain template
 * [`byteshield_scdn_security_protection_template`](resources/scdn_security_protection_template) - Manage SCDN security protection templates
 * [`byteshield_scdn_security_protection_template_batch_config`](resources/scdn_security_protection_template_batch_config) - Manage SCDN security protection template batch configuration
 * [`byteshield_scdn_security_protection_template_domain_bind`](resources/scdn_security_protection_template_domain_bind) - Manage SCDN security protection template domain bindings

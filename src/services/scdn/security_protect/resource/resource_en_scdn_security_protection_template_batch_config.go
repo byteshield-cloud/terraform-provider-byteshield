@@ -235,10 +235,10 @@ func ResourceByteShieldScdnSecurityProtectionTemplateBatchConfig() *schema.Resou
 							Description: "Policy list",
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
-									"type": {
+									"rule_type": {
 										Type:        schema.TypeString,
 										Optional:    true,
-										Description: "Policy type",
+										Description: "Rule type (was 'type')",
 									},
 									"action": {
 										Type:        schema.TypeString,
@@ -505,8 +505,8 @@ func resourceScdnSecurityProtectionTemplateBatchConfigUpdate(d *schema.ResourceD
 				for i, policy := range policies {
 					policyMap := policy.(map[string]interface{})
 					policyCfg := scdn.PreciseAccessControlPolicy{}
-					if val, ok := policyMap["type"].(string); ok {
-						policyCfg.Type = val
+					if val, ok := policyMap["rule_type"].(string); ok {
+						policyCfg.RuleType = val
 					}
 					if val, ok := policyMap["action"].(string); ok {
 						policyCfg.Action = val

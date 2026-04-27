@@ -88,9 +88,9 @@ The `policies` object of `precise_access_control_config` supports the following:
 * `action_data` - (Optional, Map) Action data
 * `action` - (Optional, String) Policy action
 * `from` - (Optional, String) From source
+* `rule_type` - (Optional, String) Rule type (was 'type')
 * `rules` - (Optional, List) Rules list
 * `status` - (Optional, Int) Status
-* `type` - (Optional, String) Policy type
 
 The `precise_access_control_config` object supports the following:
 
@@ -127,7 +127,7 @@ The `waf_rule_config` object supports the following:
 In addition to all arguments above, the following attributes are exported:
 
 * `id` - ID of the resource.
-* `fail_templates` - Failed templates
+* `fail_templates` - (**Deprecated**) This attribute is deprecated and will be removed in a future version. Please check the apply output or logs for failure details. Failed templates (Deprecated)
 
 
 ## Import

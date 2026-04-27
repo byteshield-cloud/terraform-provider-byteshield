@@ -80,11 +80,12 @@ func dataSourceScdnSecurityProtectionMemberGlobalTemplateRead(d *schema.Resource
 
 	// Set bind_domain_count
 	if err := d.Set("bind_domain_count", response.Data.BindDomainCount); err != nil {
-		return fmt.Errorf("error setting bind_domain_count: %w", err)
+		log.Printf("[WARN] Failed to set bind_domain_count: %v", err)
 	}
 
 	// Set template if exists
-	if response.Data.Template != nil {
+	if response.Data.Template != nil && response.Data.Template.ID > 0 {
+		log.Printf("[INFO] Global template found: ID=%d, Name=%s", response.Data.Template.ID, response.Data.Template.Name)
 		templateList := []map[string]interface{}{
 			{
 				"id":         response.Data.Template.ID,
@@ -98,6 +99,7 @@ func dataSourceScdnSecurityProtectionMemberGlobalTemplateRead(d *schema.Resource
 			return fmt.Errorf("error setting template: %w", err)
 		}
 	} else {
+		log.Printf("[WARN] Global template is nil or has no ID, returning empty template list")
 		// Set empty list if template is nil to avoid null in output
 		if err := d.Set("template", []map[string]interface{}{}); err != nil {
 			log.Printf("[WARN] Failed to set empty template list: %v", err)

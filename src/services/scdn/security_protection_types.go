@@ -185,7 +185,7 @@ type SecurityProtectionTemplateGetMemberGlobalResponse struct {
 
 // SecurityProtectionTemplateGetMemberGlobalData get member global template data
 type SecurityProtectionTemplateGetMemberGlobalData struct {
-	Template        *SecurityProtectionTemplateInfo `json:"template,omitempty"`
+	Template        *SecurityProtectionTemplateInfo `json:"templates,omitempty"` // Note: API returns "templates" (plural)
 	BindDomainCount int                             `json:"bind_domain_count,omitempty"`
 }
 
@@ -240,6 +240,7 @@ type SecurityProtectionTemplateCreateDomainResponse struct {
 // SecurityProtectionTemplateCreateDomainData create domain template data
 type SecurityProtectionTemplateCreateDomainData struct {
 	FailDomains map[string]string `json:"fail_domains,omitempty"` // Failed domains
+	BusinessIDs []int             `json:"business_ids,omitempty"` // Business IDs (template IDs)
 }
 
 // SecurityProtectionTemplateSearchRequest search template list request
@@ -440,7 +441,7 @@ type UpdatePreciseAccessControlConfigRequest struct {
 
 // PreciseAccessControlPolicy precise access control policy
 type PreciseAccessControlPolicy struct {
-	Type       string                   `json:"type"`        // Policy type
+	RuleType   string                   `json:"rule_type"`   // Rule type (was "type")
 	Action     string                   `json:"action"`      // Policy action
 	ActionData map[string]interface{}   `json:"action_data"` // Action data
 	Rules      []map[string]interface{} `json:"rules"`       // Rules list

@@ -356,6 +356,11 @@
           "display_name": "scdn security protection ddos config"
         },
         {
+          "name": "scdn_security_protection_domain_template",
+          "path": "docs/r/scdn_security_protection_domain_template.html.markdown",
+          "display_name": "scdn security protection domain template"
+        },
+        {
           "name": "scdn_security_protection_template",
           "path": "docs/r/scdn_security_protection_template.html.markdown",
           "display_name": "scdn security protection template"
@@ -806,6 +811,11 @@
               "name": "scdn_security_protection_ddos_config",
               "path": "docs/r/scdn_security_protection_ddos_config.html.markdown",
               "display_name": "scdn security protection ddos config"
+            },
+            {
+              "name": "scdn_security_protection_domain_template",
+              "path": "docs/r/scdn_security_protection_domain_template.html.markdown",
+              "display_name": "scdn security protection domain template"
             },
             {
               "name": "scdn_security_protection_template",
@@ -1315,6 +1325,11 @@
       "name": "scdn_security_protection_ddos_config",
       "path": "docs/r/scdn_security_protection_ddos_config.html.markdown",
       "display_name": "scdn security protection ddos config"
+    },
+    {
+      "name": "scdn_security_protection_domain_template",
+      "path": "docs/r/scdn_security_protection_domain_template.html.markdown",
+      "display_name": "scdn security protection domain template"
     },
     {
       "name": "scdn_security_protection_template",

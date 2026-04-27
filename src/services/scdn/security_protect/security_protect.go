@@ -17,6 +17,7 @@ func Resources() map[string]*schema.Resource {
 		"byteshield_scdn_security_protection_template":              resource.ResourceByteShieldScdnSecurityProtectionTemplate(),
 		"byteshield_scdn_security_protection_template_domain_bind":  resource.ResourceByteShieldScdnSecurityProtectionTemplateDomainBind(),
 		"byteshield_scdn_security_protection_template_batch_config": resource.ResourceByteShieldScdnSecurityProtectionTemplateBatchConfig(),
+		"byteshield_scdn_security_protection_domain_template":       resource.ResourceByteShieldScdnSecurityProtectionDomainTemplate(),
 	}
 }
 

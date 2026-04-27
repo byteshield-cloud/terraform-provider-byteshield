@@ -58,9 +58,10 @@ The following arguments are supported:
 In addition to all arguments above, the following attributes are exported:
 
 * `id` - ID of the resource.
+* `app_type` - App type (e.g., security_protection)
 * `bind_domain_count` - Bind domain count
 * `created_at` - Creation time
-* `fail_domains` - Failed domains
+* `fail_domains` - (**Deprecated**) This attribute is deprecated and will be removed in a future version. Please check the apply output or logs for failure details. Failed domains (Deprecated)
 * `type` - Template type: global, only_domain, more_domain
 
 
