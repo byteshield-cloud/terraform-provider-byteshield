@@ -1,6 +1,7 @@
 package resource
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"sort"
@@ -257,9 +258,45 @@ func ResourceByteShieldScdnSecurityProtectionTemplateBatchConfig() *schema.Resou
 										Type:        schema.TypeList,
 										Optional:    true,
 										Description: "Rules list",
-										Elem: &schema.Schema{
-											Type: schema.TypeMap,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"rule_type": {
+													Type:        schema.TypeString,
+													Required:    true,
+													Description: "Rule type: url, referer_domain, referer, postfix, region",
+												},
+												"logic": {
+													Type:        schema.TypeString,
+													Required:    true,
+													Description: "Logic: contains, equals, not_equals, not_belongs, len_greater_than",
+												},
+												"data": {
+													Type:        schema.TypeString,
+													Required:    true,
+													Description: "Rule data (JSON string for array/object, or plain string)",
+												},
+											},
 										},
+									},
+									"remark": {
+										Type:        schema.TypeString,
+										Optional:    true,
+										Description: "Policy remark",
+									},
+									"type": {
+										Type:        schema.TypeString,
+										Optional:    true,
+										Description: "Policy type: plus",
+									},
+									"id": {
+										Type:        schema.TypeInt,
+										Optional:    true,
+										Description: "Policy ID",
+									},
+									"sort": {
+										Type:        schema.TypeInt,
+										Optional:    true,
+										Description: "Sort order",
 									},
 									"from": {
 										Type:        schema.TypeString,
@@ -521,7 +558,27 @@ func resourceScdnSecurityProtectionTemplateBatchConfigUpdate(d *schema.ResourceD
 						policyCfg.Rules = make([]map[string]interface{}, len(val))
 						for j, rule := range val {
 							if ruleMap, ok := rule.(map[string]interface{}); ok {
-								policyCfg.Rules[j] = ruleMap
+								convertedRule := make(map[string]interface{})
+
+								// Convert rule_type and logic as strings
+								if rt, ok := ruleMap["rule_type"].(string); ok {
+									convertedRule["rule_type"] = rt
+								}
+								if lg, ok := ruleMap["logic"].(string); ok {
+									convertedRule["logic"] = lg
+								}
+								// Parse data field - it's a JSON string that needs to be parsed
+								if dataStr, ok := ruleMap["data"].(string); ok {
+									var dataValue interface{}
+									if err := json.Unmarshal([]byte(dataStr), &dataValue); err == nil {
+										convertedRule["data"] = dataValue
+									} else {
+										// If not valid JSON, use as plain string
+										convertedRule["data"] = dataStr
+									}
+								}
+
+								policyCfg.Rules[j] = convertedRule
 							}
 						}
 					}
