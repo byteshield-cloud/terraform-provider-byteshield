@@ -42,5 +42,5 @@ Import
 
 Domain templates can be imported using the resource ID:
 
-```shell
+```hcl
 terraform import byteshield_scdn_security_protection_domain_template.example domain-template-12345
